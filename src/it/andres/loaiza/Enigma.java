@@ -131,7 +131,7 @@ public class Enigma {
     private int[] generateShifts() {
         int cMax = 0;
         int cMin = 0;
-        boolean duplications = false;
+        boolean duplications;
         boolean foundMax = false;
         boolean foundMin = false;
         int[] shifts = new int[ALPHABET.length()];
@@ -174,9 +174,9 @@ public class Enigma {
             }
         } while( duplications );
 
-        for(int i = 0; i < shifts.length; ++i) {
+        for(int i:shifts) {
 
-            System.out.print(shifts[i] + "\t");
+            System.out.print(i + "\t");
         }
 
         System.out.println();
@@ -203,7 +203,7 @@ public class Enigma {
 
 
     public void encrypt(String string) {
-
+        string = string.toUpperCase();
         String output = "";
         for (int i = 0; i < string.length(); ++i)
             output += first_rotor(string.charAt(i));
@@ -219,7 +219,7 @@ public class Enigma {
 
         Enigma enigma = new Enigma();
 
-        enigma.encrypt("PAMPA SCEMO");
+        enigma.encrypt("Ryder is better than Gonzo");
         enigma.encrypt(enigma.ALPHABET);
     }
 
