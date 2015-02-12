@@ -184,21 +184,18 @@ public class Enigma {
     }
 
     private boolean Min(int cMin, int i, int[] shifts) {
-        int up0 = 0 + cMin;
+        int up0 = cMin;
         if(up0 > 25)
             up0 = 0;
-        if(shifts[i] <= up0)
-            return true;
-        return false;
+        return shifts[i] <= up0;
     }
 
     private boolean Max(int cMax, int i, int[] shifts) {
         int less25 = 25 - cMax;
         if(less25 < 0 )
             less25 = 25;
-        if(shifts[i] >= less25)
-            return true;
-        return false;
+        return shifts[i] >= less25;
+
     }
 
 
@@ -219,7 +216,7 @@ public class Enigma {
 
         Enigma enigma = new Enigma();
 
-        enigma.encrypt("Ryder is better than Gonzo");
+        enigma.encrypt("Ryder is better than Gonzo ");
         enigma.encrypt(enigma.ALPHABET);
     }
 
