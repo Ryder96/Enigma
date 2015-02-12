@@ -140,11 +140,13 @@ public class Enigma {
             shifts[i] = random.nextInt(26);
         }
 
-
-        System.out.println();
         do {
             duplications = false;
             for (int i = 0; i < shifts.length; ++i) {
+                if(shifts[i] > 25 )
+                    shifts[i]  = 0;
+                if(shifts[i]  < 0 )
+                    shifts[i] = 25;
                 if(Max(cMax,i,shifts)) {
                     foundMax = true;
                     foundMin = false;
@@ -172,13 +174,19 @@ public class Enigma {
             }
         } while( duplications );
 
+        for(int i = 0; i < shifts.length; ++i) {
+
+            System.out.print(shifts[i] + "\t");
+        }
 
         System.out.println();
         return shifts;
     }
 
     private boolean Min(int cMin, int i, int[] shifts) {
-        int up0 = 0+ cMin;
+        int up0 = 0 + cMin;
+        if(up0 > 25)
+            up0 = 0;
         if(shifts[i] <= up0)
             return true;
         return false;
@@ -186,6 +194,8 @@ public class Enigma {
 
     private boolean Max(int cMax, int i, int[] shifts) {
         int less25 = 25 - cMax;
+        if(less25 < 0 )
+            less25 = 25;
         if(shifts[i] >= less25)
             return true;
         return false;
