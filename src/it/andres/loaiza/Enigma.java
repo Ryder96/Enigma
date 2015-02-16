@@ -1,213 +1,19 @@
 package it.andres.loaiza;
 
-import java.util.Random;
 
 public class Enigma {
 
-    private final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    private final String FIRST_ROTOR = "JGDQOXUSCAMIFRVTPNEWKBLZYH";
-    private final String SECOND_ROTOR = "NTZPSFBOKMWRCJDIVLAEYUXHGQ";
-    private final String THIRD_ROTOR = "JVIUBHTCDYAKEQZPOSGXNRMWFL";
-    private final String REFLECTOR = "QYHOGNECVPUZTFDJAXWMKISRBL";
-
-
-    private int[] first_rotor_shifts = new int[ALPHABET.length()];
-    private int[] second_rotor_shifts = new int[ALPHABET.length()];
-    private int[] third_rotor_shifts = new int[ALPHABET.length()];
-    private int[] reflector_shifts = new int[ALPHABET.length()];
-
-    private int[] reverse_first_rotor_shifts = new int[ALPHABET.length()];
-    private int[] reverse_second_rotor_shifts = new int[ALPHABET.length()];
-    private int[] reverse_third_rotor_shifts = new int[ALPHABET.length()];
+    Rotors rotors;
 
 
     public Enigma() {
-        first_rotor_shifts = generateShifts();
-        second_rotor_shifts = generateShifts();
-        third_rotor_shifts = generateShifts();
 
-        reflector_shifts = generateShifts();
-        reverse_first_rotor_shifts = generateShifts();
-        reverse_second_rotor_shifts = generateShifts();
-        reverse_third_rotor_shifts = generateShifts();
-    }
-
-    private char first_rotor(char charAt) {
-        boolean find = false;
-        int i = 0;
-        if(charAt == ' ')
-            return charAt;
-        while (!find && i < ALPHABET.length()) {
-            if (charAt == ALPHABET.charAt(i))
-                find = true;
-            else
-                ++i;
-
-        }
-
-        return second_rotor(FIRST_ROTOR.charAt(first_rotor_shifts[i]));
-
-    }
-
-    private char second_rotor(char charAt) {
-        boolean find = false;
-        int i = 0;
-        while (!find && i < FIRST_ROTOR.length()) {
-            if (charAt == FIRST_ROTOR.charAt(i))
-                find = true;
-            else
-                ++i;
-
-        }
-        return third_rotor(SECOND_ROTOR.charAt(second_rotor_shifts[i]));
-    }
-
-    private char third_rotor(char charAt) {
-        boolean find = false;
-        int i = 0;
-        while (!find && i < SECOND_ROTOR.length()) {
-            if (charAt == SECOND_ROTOR.charAt(i))
-                find = true;
-            else
-                ++i;
-
-        }
-        return reflector(THIRD_ROTOR.charAt(third_rotor_shifts[i]));
-    }
-
-    private char reflector(char charAt) {
-        boolean find = false;
-        int i = 0;
-        while (!find && i < THIRD_ROTOR.length()) {
-            if (charAt == THIRD_ROTOR.charAt(i))
-                find = true;
-            else
-                ++i;
-
-        }
-        return reverse_third_rotor(REFLECTOR.charAt(reflector_shifts[i]));
-    }
-
-    private char reverse_third_rotor(char charAt) {
-        boolean find = false;
-        int i = 0;
-        while (!find && i < REFLECTOR.length()) {
-            if (charAt == REFLECTOR.charAt(i))
-                find = true;
-            else
-                ++i;
-
-        }
-        return reverse_second_rotor(THIRD_ROTOR.charAt(reverse_third_rotor_shifts[i]));
-    }
-
-    private char reverse_second_rotor(char charAt) {
-        boolean find = false;
-        int i = 0;
-        while (!find && i < THIRD_ROTOR.length()) {
-            if (charAt == THIRD_ROTOR.charAt(i))
-                find = true;
-            else
-                ++i;
-
-        }
-        return reverse_first_rotor(SECOND_ROTOR.charAt(reverse_second_rotor_shifts[i]));
-    }
-
-    private char reverse_first_rotor(char charAt) {
-        boolean find = false;
-        int i = 0;
-        while (!find && i < SECOND_ROTOR.length()) {
-            if (charAt == SECOND_ROTOR.charAt(i))
-                find = true;
-            else
-                ++i;
-
-        }
-        return FIRST_ROTOR.charAt(reverse_first_rotor_shifts[i]);
-    }
-
-    private int[] generateShifts() {
-        int cMax = 0;
-        int cMin = 0;
-        boolean duplications;
-        boolean foundMax = false;
-        boolean foundMin = false;
-        int[] shifts = new int[ALPHABET.length()];
-        Random random = new Random();
-        for (int i = 0; i < shifts.length; i++) {
-            shifts[i] = random.nextInt(26);
-        }
-
-        do {
-            duplications = false;
-            for (int i = 0; i < shifts.length; ++i) {
-                if(shifts[i] > 25 )
-                    shifts[i]  = 0;
-                if(shifts[i]  < 0 )
-                    shifts[i] = 25;
-                if(Max(cMax,i,shifts)) {
-                    foundMax = true;
-                    foundMin = false;
-                }
-                if(Min(cMin,i,shifts)){
-                    foundMin = true;
-                    foundMax = false;
-                }
-                for (int j = 0; j < shifts.length; ++j) {
-                    if (j != i) {
-                        if (shifts[i] == shifts[j]) {
-                            if (foundMax) {
-                                --shifts[j];
-                                --cMax;
-                            }
-                            else if (foundMin) {
-                                ++shifts[j];
-                                ++cMin;
-                            }
-
-                            duplications = true;
-                        }
-                    }
-                }
-            }
-        } while( duplications );
-
-        for(int i:shifts) {
-
-            System.out.print(i + "\t");
-        }
-
-        System.out.println();
-        return shifts;
-    }
-
-    private boolean Min(int cMin, int i, int[] shifts) {
-        int up0 = cMin;
-        if(up0 > 25)
-            up0 = 0;
-        return shifts[i] <= up0;
-    }
-
-    private boolean Max(int cMax, int i, int[] shifts) {
-        int less25 = 25 - cMax;
-        if(less25 < 0 )
-            less25 = 25;
-        return shifts[i] >= less25;
+        rotors = new Rotors();
 
     }
 
 
-    public void encrypt(String string) {
-        string = string.toUpperCase();
-        String output = "";
-        for (int i = 0; i < string.length(); ++i)
-            output += first_rotor(string.charAt(i));
 
-
-        System.out.println(output);
-    }
 
 
 
@@ -216,8 +22,13 @@ public class Enigma {
 
         Enigma enigma = new Enigma();
 
-        enigma.encrypt("Ryder is better than Gonzo ");
-        enigma.encrypt(enigma.ALPHABET);
+        String c;
+
+       // a = enigma.rotors.encrypt("A");
+        c = enigma.rotors.encrypt("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+
+
+        System.out.print(  c + "\n");
     }
 
 
