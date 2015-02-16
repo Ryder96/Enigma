@@ -17,12 +17,6 @@ public class Rotors {
 
         generateShifts();
 
-        System.out.println(matrix_shifts.length);
-        for (int i = 0; i < matrix_shifts.length; ++i) {
-            for (int j = 0; j < matrix_shifts[i].length; ++j)
-                System.out.print(matrix_shifts[i][j] + "\t");
-            System.out.println();
-        }
     }
 
     private void generateShifts() {
