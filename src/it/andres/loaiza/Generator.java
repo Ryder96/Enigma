@@ -7,27 +7,50 @@ import java.util.Random;
  */
 public class Generator {
 
-    private int dimension_array;
-    private int[] array_generated;
+    private int dimensionArray;
+    private int[] intArray;
+    private char[] charArray;
 
-    public Generator(int dv) {
-        this.dimension_array = dv;
+    public Generator(int dimArray) {
+        dimensionArray = dimArray;
+
+        intArray = new int[dimensionArray];
+        charArray = new char[dimensionArray];
+        initCharArray();
+        initIntArray();
 
     }
 
+    public int[] shambleIntArray() {
 
-    public int[] shamble() {
-
-        int[] array = new int[dimension_array];
+        int[] array = new int[dimensionArray];
 
         for (int j = 0; j < array.length; ++j)
-            array[j] = array_generated[j];
+            array[j] = intArray[j];
 
 
         int k;
         Random random = new Random();
-        for(int i = 0; i < dimension_array; ++i){
-            k = random.nextInt(dimension_array);
+        for(int i = 0; i < dimensionArray; ++i){
+            k = random.nextInt(dimensionArray);
+            array = swap(array,i,k);
+        }
+
+        return array;
+    }
+
+    public char[] shambleCharArray() {
+
+        char[] array = new char[dimensionArray];
+
+        for (int j = 0; j < array.length; ++j)
+            array[j] = charArray[j];
+
+
+        int k;
+        Random random = new Random();
+        for(int i = 0; i < dimensionArray; ++i){
+            k = random.nextInt(dimensionArray);
             array = swap(array,i,k);
         }
 
@@ -49,69 +72,36 @@ public class Generator {
         return tempArray;
     }
 
-    public void initArray(){
-        int cMax = 0;
-        int cMin = 0;
-        boolean duplications;
-        boolean foundMax = false;
-        int[] shifts = new int[dimension_array];
+    private char[] swap(char[] array, int i, int k) {
+
+        char[] tempArray = array;
+        char temp = tempArray[i];
         Random random = new Random();
-        for (int i = 0; i < shifts.length; i++) {
-            shifts[i] = random.nextInt(26);
+
+        while ( i == k) {
+            k = random.nextInt(array.length);
         }
 
-        do {
-            duplications = false;
-            for (int i = 0; i < shifts.length; ++i) {
-                if (shifts[i] > 25)
-                    shifts[i] = 0;
-                if (shifts[i] < 0)
-                    shifts[i] = 25;
-                if (Max(cMax, i, shifts)) {
-                    foundMax = true;
-                }
-                if (Min(cMin, i, shifts)) {
-                    foundMax = false;
-                }
-                for (int j = 0; j < shifts.length; ++j) {
-                    if (j != i) {
-                        if (shifts[i] == shifts[j]) {
-                            if (foundMax) {
-                                --shifts[j];
-                                --cMax;
-                            } else {
-                                ++shifts[j];
-                                ++cMin;
-                            }
-
-                            duplications = true;
-                        }
-                    }
-                }
-            }
-        } while (duplications);
-
-        array_generated = shifts;
+        tempArray[i] = tempArray[k];
+        tempArray[k] = temp;
+        return tempArray;
     }
 
 
-    private boolean Min(int cMin, int i, int[] shifts) {
-        int up = cMin;
-        if(up > 25)
-            up = 0;
-        return shifts[i] <= up;
+    public void initCharArray(){
+
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for(int i = 0; i < alphabet.length(); ++i)
+            charArray[i] = alphabet.charAt(i);
+
     }
 
-    private boolean Max(int cMax, int i, int[] shifts) {
-        int less = 25 - cMax;
-        if(less < 0 )
-            less = 25;
-        return shifts[i] >= less;
+    public void initIntArray(){
+        for(int i=0; i < 26; ++i) {
+            intArray[i] = i;
+        }
 
     }
 
 
-    public int[] getArrayGenerated(){
-        return array_generated;
-    }
 }

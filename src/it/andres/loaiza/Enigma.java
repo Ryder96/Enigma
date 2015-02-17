@@ -3,12 +3,12 @@ package it.andres.loaiza;
 
 public class Enigma {
 
-    Rotors rotors;
+    Rotor rotor;
 
 
     public Enigma() {
 
-        rotors = new Rotors();
+        rotor = new Rotor();
 
     }
 
@@ -22,13 +22,14 @@ public class Enigma {
 
         Enigma enigma = new Enigma();
 
-        String c;
+        String a,b,c;
 
-       // a = enigma.rotors.encrypt("A");
-        c = enigma.rotors.encrypt("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        a = enigma.rotor.startEncrypt("A");
+        b = enigma.rotor.startDecrypt(enigma.rotor.startEncrypt("A"));
+        System.out.print(b);
+       // c = enigma.rotor.encrypt("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
 
-        System.out.print(  c + "\n");
     }
 
 
