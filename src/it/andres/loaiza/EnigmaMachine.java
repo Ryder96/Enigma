@@ -11,7 +11,10 @@ import java.io.InputStreamReader;
 public class EnigmaMachine {
 
     private final StringBuffer ALPHABET = new StringBuffer("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-    private StringBuffer rotorOne, rotorTwo, rotorThree, reflector;
+    private StringBuffer rotorOne = new StringBuffer("JGDQOXUSCAMIFRVTPNEWKBLZYH"),
+            rotorTwo = new StringBuffer("NTZPSFBOKMWRCJDIVLAEYUXHGQ"),
+            rotorThree = new StringBuffer("JVIUBHTCDYAKEQZPOSGXNRMWFL"),
+            reflector = new StringBuffer("QYHOGNECVPUZTFDJAXWMKISRBL");
     private StringBuffer rRotorOne, rRotorTwo, rRotorThree;
 
     private StringBuffer lastLetterR1, lastLetterR2;
@@ -39,7 +42,6 @@ public class EnigmaMachine {
     public static void main(String[] args) throws IOException {
 
         EnigmaMachine myMachineToCrypt = new EnigmaMachine();
-        EnigmaMachine myMachineToDecrypt = new EnigmaMachine(myMachineToCrypt);
         BufferedReader myKey = new BufferedReader(new InputStreamReader(System.in));
         String a, b, c, d;
 
@@ -49,8 +51,7 @@ public class EnigmaMachine {
             a = myKey.readLine();
             System.out.println("Messaggio criptato/decriptato:");
             b = myMachineToCrypt.encrypt(a);
-            d = myMachineToDecrypt.encrypt(b);
-            System.out.println("Testo iniziale: " + a + "\n" + "Testo criptato/decriptato:" + b + " " + d);
+            System.out.println("Testo iniziale: " + a + "\n" + "Testo criptato/decriptato:" + b );
 
             System.out.print("Continuare? [S/N]");
             c = myKey.readLine();
@@ -97,13 +98,10 @@ public class EnigmaMachine {
 
     private void initRotors() {
 
-        rotorOne = new StringBuffer(Generator.shambleCharArray(ALPHABET.toString()));
-        rotorTwo = new StringBuffer(Generator.shambleCharArray(ALPHABET.toString()));
-        rotorThree = new StringBuffer(Generator.shambleCharArray(ALPHABET.toString()));
-        reflector = new StringBuffer(Generator.shambleCharArray(ALPHABET.toString()));
-        rRotorOne = new StringBuffer(Generator.shambleCharArray(ALPHABET.toString()));
-        rRotorTwo = new StringBuffer(Generator.shambleCharArray(ALPHABET.toString()));
-        rRotorThree = new StringBuffer(Generator.shambleCharArray(ALPHABET.toString()));
+
+        rRotorOne = new StringBuffer(reflector.toString());
+        rRotorTwo = new StringBuffer(reflector.toString());
+        rRotorThree = new StringBuffer(reflector.toString());
 
 
     }
